@@ -1,0 +1,31 @@
+# User-configurable settings for the pipeline.
+# Format: KEY=value (no quotes). Lines starting with # or ; are ignored.
+ 
+
+#------SETTINGS------
+
+# Nerfstudio Splatfacto training params
+IMAGE_DOWNSCALE=2
+MAX_STEPS=15000
+VIEWER_HOST=127.0.0.1
+VIEWER_PORT=7007
+
+# Project name (use the root folder's name)
+PROJECT_NAME=%ROOT_NAME%
+
+
+#-----PATHS----- 
+
+# RealityScan/RealityCapture path
+REALITYSCAN_EXE=C:\Program Files\Epic Games\RealityScan_2.0\RealityScan.exe
+
+# Leave CONDA_BAT blank to auto-detect in standard locations (Anaconda/Miniconda).
+CONDA_BAT=
+
+# Default images folder (override if your images live elsewhere).
+IMAGE_DIR=%ROOT%\images
+
+#splat input and output directories 
+NS_DIR=%ROOT%\nerfstudio
+NS_OUTPUT_DIR=%NS_DIR%\output
+SPLAT_OUTPUT_DIR=%ROOT%\splats

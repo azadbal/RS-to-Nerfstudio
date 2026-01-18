@@ -13,9 +13,24 @@ set "ROOT_NO_SLASH=%ROOT%"
 if "%ROOT_NO_SLASH:~-1%"=="\" set "ROOT_NO_SLASH=%ROOT_NO_SLASH:~0,-1%"
 
 for %%A in ("%ROOT_NO_SLASH%") do set "PROJECT_NAME=%%~nA"
+set "ROOT_NAME=%PROJECT_NAME%"
+
+set "SETTINGS_FILE=%ROOT%User_Settings.txt"
+if exist "%SETTINGS_FILE%" (
+  for /f "usebackq tokens=1* delims==" %%A in ("%SETTINGS_FILE%") do (
+    if not "%%A"=="" if not "%%A:~0,1%"=="#" if not "%%A:~0,1%"==";" (
+      call set "%%A=%%B"
+    )
+  )
+)
+
+if defined PROJECT_NAME set "PROJECT_NAME=%PROJECT_NAME%"
+if not defined NS_DIR set "NS_DIR=%ROOT%nerfstudio"
+if not defined NS_OUTPUT_DIR set "NS_OUTPUT_DIR=%NS_DIR%\output"
+if not defined SPLAT_OUTPUT_DIR set "SPLAT_OUTPUT_DIR=%ROOT%splats"
 
 REM -------- splatfacto base dir --------
-set "SPLAT_DIR=%ROOT%nerfstudio\output\nerfstudio\splatfacto"
+set "SPLAT_DIR=%NS_OUTPUT_DIR%\nerfstudio\splatfacto"
 
 if not exist "%SPLAT_DIR%" (
   echo [ERROR] Splatfacto directory not found:
@@ -76,12 +91,11 @@ if not exist "%CONFIG%" (
 )
 
 REM -------- splats output dir --------
-set "OUT=%ROOT%splats"
+set "OUT=%SPLAT_OUTPUT_DIR%"
 if not exist "%OUT%" mkdir "%OUT%"
 
 REM -------- Locate conda.bat --------
-set "CONDA_BAT="
-call :find_conda "%USERPROFILE%\anaconda3"
+if not defined CONDA_BAT call :find_conda "%USERPROFILE%\anaconda3"
 if not defined CONDA_BAT call :find_conda "%USERPROFILE%\miniconda3"
 if not defined CONDA_BAT call :find_conda "C:\ProgramData\Anaconda3"
 if not defined CONDA_BAT call :find_conda "C:\ProgramData\Miniconda3"
