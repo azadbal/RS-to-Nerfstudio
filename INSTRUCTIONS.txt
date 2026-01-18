@@ -1,7 +1,0 @@
-create a project folder anywhere, and name it what you want your project and splats to be name
-place the images into root/images
-	you can have subdirs. it'll read the full folder
-		you can even have _geometry and _texture layers. not an issue
-	if you have raw images, move those to root/raw
-copy these BAT files to the project root
-run them one by one

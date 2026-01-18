@@ -1,0 +1,3 @@
+-selectAllImages
+-exportRegistration "X:\FILES\RC\RC_CLI\RCCOMMANDS\rc_nerfstudio_3dgs\reg.csv" "X:\FILES\RC\RC_CLI\Settings\Export_reg_internalExternalcamParams.xml" ^
+-exportSparsePointCloud "X:\FILES\RC\RC_CLI\RCCOMMANDS\rc_nerfstudio_3dgs\pointcloud.ply" "X:\FILES\RC\RC_CLI\Settings\export_alignment_PLY_3dgs.xml"

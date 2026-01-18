@@ -1,4 +1,4 @@
-@echo off
+@echo on
 setlocal ENABLEDELAYEDEXPANSION
 
 REM ===== Project root (this .bat's folder) =====

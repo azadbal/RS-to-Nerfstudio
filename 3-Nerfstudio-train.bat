@@ -1,5 +1,8 @@
-@echo off
+@echo on
 setlocal ENABLEDELAYEDEXPANSION
+
+set "imagedownscale=2"
+set "maxsteps=15000"
 
 REM ===== Project root (this .bat's folder) =====
 set "ROOT=%~dp0"
@@ -33,10 +36,12 @@ call "%CONDA_BAT%" run -n nerfstudio --no-capture-output ^
     --vis viewer+tensorboard ^
     --viewer.websocket_host 127.0.0.1 ^
     --viewer.websocket_port 7007 ^
-    --max-num-iterations 15000 ^
+    --max-num-iterations %maxsteps% ^
     --pipeline.model.use-bilateral-grid True ^
     --data "%NS_DIR%" ^
 	--output-dir "%NS_DIR%\output" ^
+	nerfstudio-data ^
+    --downscale-factor %imagedownscale%
   1>>"%LOG%" 2>&1
 if errorlevel 1 goto :err
 
