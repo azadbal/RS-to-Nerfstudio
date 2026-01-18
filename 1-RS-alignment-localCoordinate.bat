@@ -10,13 +10,14 @@ if /I "%~1"=="autoquit" set "QUIT_FLAG=-quit"
 
 :: root folder of this script
 set "RootFolder=%~dp0"
+set "SCRIPT_DIR=%RootFolder:~0,-1%"
+for %%A in ("%SCRIPT_DIR%\..") do set "ROOT=%%~fA"
 
 :: extract the root folder name (remove trailing backslash, get last folder name)
-for %%i in ("%RootFolder:~0,-1%") do set "ProjectName=%%~nxi"
-set "ROOT=%RootFolder:~0,-1%"
+for %%i in ("%ROOT%") do set "ProjectName=%%~nxi"
 set "ROOT_NAME=%ProjectName%"
 
-set "SETTINGS_FILE=%RootFolder%User_Settings.txt"
+set "SETTINGS_FILE=%SCRIPT_DIR%\User_Settings.txt"
 if not exist "%SETTINGS_FILE%" (
   echo [ERROR] Missing User_Settings.txt
   exit /b 1
@@ -35,14 +36,14 @@ set "NSFolder=%NS_DIR%"
 set "RealityCaptureExe=%REALITYSCAN_EXE%"
 
 :: define RC output folder and create it if missing
-set "RCFolder=%RootFolder%RC"
+set "RCFolder=%ROOT%\RC"
 if not exist "%RCFolder%" mkdir "%RCFolder%"
 
 :: define RC output folder and create it if missing
 if not exist "%NSFolder%" mkdir "%NSFolder%"
 
 :: set paths
-set "SettingsFolder=%RootFolder%\misc\Settings"
+set "SettingsFolder=%SCRIPT_DIR%\misc\Settings"
 set "Project=%RCFolder%\%ProjectName%.rsproj"
 
 :: run RealityCapture

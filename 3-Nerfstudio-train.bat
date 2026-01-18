@@ -1,12 +1,14 @@
 @echo on
 setlocal ENABLEDELAYEDEXPANSION
 
-REM ===== Project root (this .bat's folder) =====
+REM ===== Project root (parent of script folder) =====
 set "ROOT=%~dp0"
 if "%ROOT:~-1%"=="\" set "ROOT=%ROOT:~0,-1%"
+set "SCRIPT_DIR=%ROOT%"
+for %%A in ("%SCRIPT_DIR%\..") do set "ROOT=%%~fA"
 for %%A in ("%ROOT%") do set "ROOT_NAME=%%~nA"
 
-set "SETTINGS_FILE=%ROOT%\User_Settings.txt"
+set "SETTINGS_FILE=%SCRIPT_DIR%\User_Settings.txt"
 if not exist "%SETTINGS_FILE%" (
   echo [ERROR] Missing User_Settings.txt
   exit /b 1
@@ -27,7 +29,9 @@ set "viewerport=%VIEWER_PORT%"
 REM ===== Paths =====
 set "NS_DIR=%NS_DIR%"
 set "OUT_DIR=%NS_OUTPUT_DIR%"
-set "LOG=%ROOT%\ns_train.log"
+set "LOG_DIR=%ROOT%\logs"
+if not exist "%LOG_DIR%" mkdir "%LOG_DIR%"
+set "LOG=%LOG_DIR%\ns_train.log"
 echo. > "%LOG%"
 
 REM ===== Find conda =====

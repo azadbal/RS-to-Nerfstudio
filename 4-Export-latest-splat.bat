@@ -8,14 +8,13 @@ REM ==================================================
 
 REM -------- Project root and name --------
 set "ROOT=%~dp0"
-
-set "ROOT_NO_SLASH=%ROOT%"
-if "%ROOT_NO_SLASH:~-1%"=="\" set "ROOT_NO_SLASH=%ROOT_NO_SLASH:~0,-1%"
-
-for %%A in ("%ROOT_NO_SLASH%") do set "PROJECT_NAME=%%~nA"
+if "%ROOT:~-1%"=="\" set "ROOT=%ROOT:~0,-1%"
+set "SCRIPT_DIR=%ROOT%"
+for %%A in ("%SCRIPT_DIR%\..") do set "ROOT=%%~fA"
+for %%A in ("%ROOT%") do set "PROJECT_NAME=%%~nA"
 set "ROOT_NAME=%PROJECT_NAME%"
 
-set "SETTINGS_FILE=%ROOT%User_Settings.txt"
+set "SETTINGS_FILE=%SCRIPT_DIR%\User_Settings.txt"
 if not exist "%SETTINGS_FILE%" (
   echo [ERROR] Missing User_Settings.txt
   exit /b 1
@@ -132,7 +131,7 @@ set "DOWNSCALE=%DOWNSCALE::=_%"
 set "DOWNSCALE_TAG=downscale%DOWNSCALE%"
 set "SPLAT_NAME=%PROJECT_NAME%_%METHOD_NAME%_%STEP_TAG%_%DOWNSCALE_TAG%"
 
-echo [INFO] Project root:  %ROOT_NO_SLASH%
+echo [INFO] Project root:  %ROOT%
 echo [INFO] Project name:  %PROJECT_NAME%
 echo [INFO] Selected run:  %RUN_DIR%
 echo [INFO] Checkpoint:    %CKPT%
