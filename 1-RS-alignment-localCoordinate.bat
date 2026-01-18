@@ -8,9 +8,6 @@ set "QUIT_FLAG="
 if /I "%~1"=="autoquit" set "QUIT_FLAG=-quit"
 
 
-:: path to RealityCapture application
-set "RealityCaptureExe=C:\Program Files\Epic Games\RealityScan_2.0\RealityScan.exe"
-
 :: root folder of this script
 set "RootFolder=%~dp0"
 
@@ -20,6 +17,10 @@ set "ROOT=%RootFolder:~0,-1%"
 set "ROOT_NAME=%ProjectName%"
 
 set "SETTINGS_FILE=%RootFolder%User_Settings.txt"
+if not exist "%SETTINGS_FILE%" (
+  echo [ERROR] Missing User_Settings.txt
+  exit /b 1
+)
 if exist "%SETTINGS_FILE%" (
   for /f "usebackq tokens=1* delims==" %%A in ("%SETTINGS_FILE%") do (
     if not "%%A"=="" if not "%%A:~0,1%"=="#" if not "%%A:~0,1%"==";" (
@@ -28,21 +29,19 @@ if exist "%SETTINGS_FILE%" (
   )
 )
 
-if defined PROJECT_NAME set "ProjectName=%PROJECT_NAME%"
-if defined IMAGE_DIR set "Images=%IMAGE_DIR%"
-if defined NS_DIR set "NSFolder=%NS_DIR%"
-if defined REALITYSCAN_EXE set "RealityCaptureExe=%REALITYSCAN_EXE%"
+set "ProjectName=%PROJECT_NAME%"
+set "Images=%IMAGE_DIR%"
+set "NSFolder=%NS_DIR%"
+set "RealityCaptureExe=%REALITYSCAN_EXE%"
 
 :: define RC output folder and create it if missing
 set "RCFolder=%RootFolder%RC"
 if not exist "%RCFolder%" mkdir "%RCFolder%"
 
 :: define RC output folder and create it if missing
-if not defined NSFolder set "NSFolder=%RootFolder%nerfstudio"
 if not exist "%NSFolder%" mkdir "%NSFolder%"
 
 :: set paths
-if not defined Images set "Images=%RootFolder%images"
 set "SettingsFolder=%RootFolder%\misc\Settings"
 set "Project=%RCFolder%\%ProjectName%.rsproj"
 

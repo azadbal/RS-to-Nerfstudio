@@ -16,6 +16,10 @@ for %%A in ("%ROOT_NO_SLASH%") do set "PROJECT_NAME=%%~nA"
 set "ROOT_NAME=%PROJECT_NAME%"
 
 set "SETTINGS_FILE=%ROOT%User_Settings.txt"
+if not exist "%SETTINGS_FILE%" (
+  echo [ERROR] Missing User_Settings.txt
+  exit /b 1
+)
 if exist "%SETTINGS_FILE%" (
   for /f "usebackq tokens=1* delims==" %%A in ("%SETTINGS_FILE%") do (
     if not "%%A"=="" if not "%%A:~0,1%"=="#" if not "%%A:~0,1%"==";" (
@@ -24,10 +28,9 @@ if exist "%SETTINGS_FILE%" (
   )
 )
 
-if defined PROJECT_NAME set "PROJECT_NAME=%PROJECT_NAME%"
-if not defined NS_DIR set "NS_DIR=%ROOT%nerfstudio"
-if not defined NS_OUTPUT_DIR set "NS_OUTPUT_DIR=%NS_DIR%\output"
-if not defined SPLAT_OUTPUT_DIR set "SPLAT_OUTPUT_DIR=%ROOT%splats"
+set "NS_DIR=%NS_DIR%"
+set "NS_OUTPUT_DIR=%NS_OUTPUT_DIR%"
+set "SPLAT_OUTPUT_DIR=%SPLAT_OUTPUT_DIR%"
 
 REM -------- splatfacto base dir --------
 set "SPLAT_DIR=%NS_OUTPUT_DIR%\nerfstudio\splatfacto"

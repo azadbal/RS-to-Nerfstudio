@@ -7,6 +7,10 @@ if "%ROOT:~-1%"=="\" set "ROOT=%ROOT:~0,-1%"
 for %%A in ("%ROOT%") do set "ROOT_NAME=%%~nA"
 
 set "SETTINGS_FILE=%ROOT%\User_Settings.txt"
+if not exist "%SETTINGS_FILE%" (
+  echo [ERROR] Missing User_Settings.txt
+  exit /b 1
+)
 if exist "%SETTINGS_FILE%" (
   for /f "usebackq tokens=1* delims==" %%A in ("%SETTINGS_FILE%") do (
     if not "%%A"=="" if not "%%A:~0,1%"=="#" if not "%%A:~0,1%"==";" (
@@ -16,11 +20,9 @@ if exist "%SETTINGS_FILE%" (
 )
 
 REM  ===== Paths =====
-if not defined NS_DIR set "NS_DIR=%ROOT%\nerfstudio"
-set "OUT_DIR=%NS_DIR%\output"
-if not defined IMAGE_DIR set "IMG_DIR=%ROOT%\images"
-if defined IMAGE_DIR set "IMG_DIR=%IMAGE_DIR%"
-if defined NS_OUTPUT_DIR set "OUT_DIR=%NS_OUTPUT_DIR%"
+set "IMG_DIR=%IMAGE_DIR%"
+set "NS_DIR=%NS_DIR%"
+set "OUT_DIR=%NS_OUTPUT_DIR%"
 set "LOG=%ROOT%\ns_convert.log"
 echo. > "%LOG%"
 
@@ -60,7 +62,7 @@ powershell -NoProfile -Command ^
   "if($n -lt 1){Write-Host '[ERROR] 0 frames after processing. CSV/images mismatch.'; exit 2}else{Write-Host ('[OK] Frames: ' + $n)}"
 if errorlevel 2 exit /b 1
 
-REM ===== Edit JSON exactly as requested (no BOM) =====
+REM ===== Edit transform.json to set camera model to OPENCV to use original distorted images (you dont need to undistort images to train) =====
 powershell -NoProfile -Command ^
   "$p = '%NS_DIR%\transforms.json';" ^
   "$j = Get-Content -Raw $p | ConvertFrom-Json;" ^
